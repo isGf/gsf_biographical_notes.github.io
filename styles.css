@@ -166,7 +166,7 @@ body {
     border: 2px solid var(--primary-color);
 }
 
-.features, .tutorials {
+.non-technicals, .non-technical {
     padding: 8rem 5%;
 }
 
