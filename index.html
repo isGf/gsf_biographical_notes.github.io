@@ -1,11 +1,233 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>我的网站</title>
-    <link rel="stylesheet" href="style.css">
-  </head>
-  <body>
-    <h1>Hello World！</h1>
-    <p>这是我的第一个 GitHub Pages 网站。</p>
-  </body>
+<html lang="zh" id="top">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>橘（居）然是你的Bug</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .navbar {
+            padding: 10px;
+        }
+
+        .logo img {
+            width: 150px;
+            height: auto;
+            margin-left: 20px;
+        }
+
+        .nav-links li {
+            font-size: 14px;
+        }
+
+        .theme-toggle {
+            font-size: 14px;
+            margin-right: 20px;
+        }
+
+        .nav-links li a {
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .nav-links li a:hover {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        .nav-links li a.active {
+            background-color: #0056b3;
+            color: white;
+        }
+
+
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                　　　　　
+            </div>
+            <ul class="nav-links">
+                <li><a href="#features">个人博客</a></li>
+                <li><a href="#tutorials">关于橘然</a></li>
+                <li><a href="#changelog">日志</a></li>
+            </ul>
+            <button class="theme-toggle">
+                <span class="theme-icon">🌙</span>
+                <span class="theme-text">切换主题</span>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1 class="fade-in">橘（居）然是你的Bug</h1>
+            <p class="subtitle fade-in">Blog & Orange & Log</p>
+        </section>
+
+        <section id="features" class="features">
+            <h2>个人博客</h2>
+            <!-- Unity分类 -->
+            <div class="category-section">
+                <h3>Unity 系列</h3>
+                <div class="features-grid">
+                    <!-- Unity相关文章卡片 -->
+                    <div class="feature-card new-style">
+                        <img src="blogs/imgs/Unity/01 静态类内延迟操作.png">
+                        <h4>Unity 自用工具静态类</h4>
+                        <div class="date">2025年3月11日</div>
+                        <p>　　定义了诸多自用工具静态类，包括封装协程延迟、扩展方法、IO操作、各种Get等...</p>
+                        <div class="card-footer">
+                            <div class="author">橘然</div>
+                            <a href="blogs/htmls/Unity/Unity 自用工具静态类.html" class="learn-more">查看</a>
+                        </div>
+                    </div>
+                    <div class="feature-card new-style">
+                        <img src="blogs/imgs/Unity/02 音频进度条-2.png">
+                        <h4>Unity 实现可控音频进度条</h4>
+                        <div class="date">2025年7月18日</div>
+                        <p>　　基于UGUI-Slider组件，实现可视化音频进度以及可控制的音频进度条</p>
+                        <div class="card-footer">
+                            <div class="author">橘然</div>
+                            <a href="blogs/htmls/Unity/Unity 实现可控音频进度条.html" class="learn-more">查看</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- AI分类 -->
+            <div class="category-section">
+                <h3>AI 系列</h3>
+                <div class="features-grid">
+                    <!-- AI相关文章卡片 -->
+                    <div class="feature-card new-style">
+                        <img src="blogs/imgs/AI/01 安卓设备部署大模型.png">
+                        <h4>安卓设备部署大模型</h4>
+                        <div class="date">2023年10月5日</div>
+                        <p>xxx</p>
+                        <div class="card-footer">
+                            <div class="author">橘然</div>
+                            <a href="blogs/htmls/AI/01 安卓设备部署大模型.html" class="learn-more">查看</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 其他分类 -->
+            <div class="category-section">
+                <h3>其他</h3>
+                <div class="features-grid">
+                    <div class="feature-card new-style">
+                        <img src="imgs/HawkLogo.png" alt="React Hooks">
+                        <div class="category">Development</div>
+                        <div class="date">2023年9月15日</div>
+                        <h4>React Hooks:nt</h4>
+                        <p>A comprehensive guide to understanding and effectively using React hooks for state management in modern applications.</p>
+                        <div class="card-footer">
+                            <div class="author">Jane Doe</div>
+                            <a href="tutorial.html" class="learn-more">查看</a>
+                        </div>
+                    </div>
+                    <div class="feature-card new-style">
+                        <img src="HawkLogo1.png" alt="Design Systems">
+                        <div class="category">Design</div>
+                        <div class="date">2023年9月1日</div>
+                        <h4>Design Systems:s</h4>
+                        <p>Learn how to create consistent, maintainable, and scalable user interfaces through effective design system implementation.</p>
+                        <div class="card-footer">
+                            <div class="author">Jane Doe</div>
+                            <a href="best-practices.html" class="learn-more">查看</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="more-features">
+                <p>更多文章持续更新中，敬请期待...</p>
+            </div>
+        </section>
+
+        <section id="tutorials" class="tutorials">
+            <h2>关于橘然</h2>
+            <div class="tutorial-grid">
+                <div class="tutorial-card">
+                    <h4>新手入门</h4>
+                    <p>快速上手HAWK AI的基本功能</p>
+                    <a href="tutorial.html" class="read-more">阅读教程 →</a>
+                </div>
+                <div class="tutorial-card">
+                    <h4>最佳实践</h4>
+                    <p>学习更多人工智能使用技巧</p>
+                    <a href="best-practices.html" class="read-more">阅读教程 →</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="changelog" class="changelog">
+            <h2>日志</h2>
+            <div class="changelog-container">
+                <div class="changelog-item">
+                    <div class="version">v1.2</div>
+                    <div class="date">2024-12-17</div>
+                    <ul class="changes">
+                        <li>✅新增“资料获取”功能，可获取公司内部公开的资料</li>
+                        <li>✅新增“图表生成”功能，可按照具体数据快速生成一些图表</li>
+                        <li>🔁少量更新了“使用教程-新手入门”，新增了资料获取、图表生成</li>
+                        <li>🔁完全重构“使用教程-最佳实践”内容，可以在最佳实践查看公司内部AI分享的知识点总结了</li>
+                        <li>🔀在HAWK.AI主界面新增了图表生成、图片生成、文生PPT功能图标，后续将陆续上线</li>
+                        <li>❌删除“周报模板”合并到“资料获取”，统称为“资料获取”</li>
+                    </ul>
+                </div>
+                <div class="changelog-item">
+                    <div class="version">v1.1</div>
+                    <div class="date">2024-11-25</div>
+                    <ul class="changes">
+                        <li>✅全新发布 HAWK AI 智能助理官方网站</li>
+                        <li>✅新增智能文档解析引擎</li>
+                        <li>🔁优化人员查询系统的响应速度和结果准确度</li>
+                        <li>🔁提升系统并发处理能力，最大并发数 ＞5</li>
+                        <li>❌移除旧版 Unity WebUI 框架，全面升级至轻量化 Web 架构</li>
+                    </ul>
+                </div>
+                <div class="changelog-item">
+                    <div class="version">v1.0</div>
+                    <div class="date">2024-11-11</div>
+                    <ul class="changes">
+                        <li>✅正式发布"皓客智能助理"</li>
+                        <li>✅上线人员查询功能</li>
+                        <li>✅上线资质查询功能</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <button id="back-to-top" class="back-to-top" title="返回顶部">
+        ↑
+    </button>
+
+    <footer>
+        <div class="footer-bottom">
+            <p>&copy; 2024 HAWK.AI 保留所有权利</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
 </html>
