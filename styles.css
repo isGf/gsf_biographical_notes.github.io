@@ -369,17 +369,18 @@ html {
     scroll-behavior: smooth; /* 添加��滑滚动 */
 }
 
-.changelog {
-    padding: 8rem 5%;
+.Orange {
+    padding: 5rem 5% 8rem;
     background-color: var(--card-bg);
+    margin-top: 6rem;
 }
 
-.changelog-container {
+.Orange-container {
     max-width: 800px;
     margin: 0 auto;
 }
 
-.changelog-item {
+.Orange-item {
     padding: 1.5rem;
     margin-bottom: 1.5rem;
     border-left: 3px solid var(--primary-color);
@@ -420,7 +421,7 @@ html {
     color: var(--primary-color);
 }
 
-.changelog-item:hover {
+.Orange-item:hover {
     transform: translateX(5px);
     transition: transform 0.3s ease;
 }
