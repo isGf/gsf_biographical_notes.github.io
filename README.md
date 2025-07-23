@@ -1,2 +1,2 @@
 # gsf_biographical_notes
-私人简历
+私人博客

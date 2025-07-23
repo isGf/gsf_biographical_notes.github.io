@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css">
+    <style>
+        .code-container {
+            position: relative;
+        }
+        .copy-button {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            padding: 0.3rem 0.6rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: background-color 0.3s;
+            z-index: 1;
+        }
+        .copy-button:hover {
+            background-color: #2980b9;
+        }
+        pre code {
+            background-color: #f5f5f5;
+            color: #333;
+            padding: 1rem;
+            border-radius: 8px;
+            display: block;
+            overflow-x: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+            margin-top: 0;
+        }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ollama 本地运行大模型</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .navbar {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 10px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 60px;
+        }
+
+        .logo {
+            margin-left: 40px;
+        }
+
+        .logo img {
+            width: 120px;
+            height: auto;
+            display: block;
+        }
+
+        .page-title {
+            font-size: 24px;
+            color: #2c3e50;
+            margin: 0 auto;
+    font-weight: bold;
+        }
+
+        .back-button {
+            margin-left: 50px;
+            padding: 8px 16px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            font-weight: bold;
+        }
+
+        .back-button:hover {
+            background-color: #2980b9;
+        }
+
+        .tutorial-content {
+            max-width: 800px;
+            margin: 80px auto 40px;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+
+        .tutorial-section {
+            margin-bottom: 40px;
+        }
+
+        .tutorial-section h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .tutorial-section h2 {
+            color: #3498db;
+            font-size: 1.8em;
+            margin: 30px 0 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        .tutorial-section p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #555;
+        }
+
+        .tutorial-section ul {
+            padding-left: 20px;
+        }
+
+        .tutorial-section li {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        .tutorial-content .back-button {
+            display: none;
+        }
+
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .footer-bottom {
+            padding: 10px 0;
+        }
+
+        @media (max-width: 768px) {
+            .tutorial-content {
+                margin: 60px auto 20px;
+                padding: 15px;
+            }
+
+            .tutorial-section h1 {
+                font-size: 2em;
+            }
+
+            .tutorial-section h2 {
+                font-size: 1.5em;
+            }
+
+            .back-button {
+                padding: 10px 20px;
+            }
+        }
+
+        /* 添加左侧导航样式 */
+        .page-container {
+            display: flex;
+            margin-top: 80px;
+            padding-left: 250px;
+        }
+
+        .side-nav {
+            width: 250px;
+            height: calc(100vh - 80px);
+            position: fixed;
+            left: 0;
+            top: 80px;
+            background-color: #f8f9fa;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+
+        .side-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .side-nav li {
+            margin-bottom: 15px;
+        }
+
+        .side-nav a {
+            color: #333;
+            text-decoration: none;
+            display: block;
+            padding: 10px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .side-nav a:hover {
+            background-color: #e9ecef;
+            color: #007bff;
+        }
+
+        .side-nav a.active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* 调整主内容区域的位置和布局 */
+        .tutorial-content {
+            flex: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+
+        /* 响应式设计调整 */
+        @media (max-width: 768px) {
+            .page-container {
+                padding-left: 0;
+            }
+
+            .side-nav {
+                width: 100%;
+                height: auto;
+                position: relative;
+                top: 0;
+                margin-bottom: 20px;
+            }
+
+            .tutorial-content {
+                margin: 0 20px;
+            }
+        }
+
+        /* 更新点赞部分的样式 */
+        .like-section {
+            text-align: center;
+            margin: 60px 0;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .like-button {
+            font-size: 56px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 10px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .like-button:hover {
+            transform: translateY(-5px);
+        }
+
+        .like-button.liked {
+            animation: likeEffect 0.5s ease;
+        }
+
+        @keyframes likeEffect {
+            0% { transform: scale(1); }
+            25% { transform: scale(1.2) rotate(-15deg); }
+            50% { transform: scale(0.95) rotate(15deg); }
+            75% { transform: scale(1.1) rotate(-15deg); }
+            100% { transform: scale(1) rotate(0); }
+        }
+
+        .like-text {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #666;
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+
+        .gradient-dash {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: bold;
+            padding: 0 8px;
+            font-size: 20px;
+        }
+         .center-img {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
+        .center-img img {
+            max-width: 90%;
+            height: auto;
+            max-height: 500px;
+            object-fit: contain;
+        } 
+
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <a href="../../../index.html" class="back-button">返回首页</a>
+            <h1 class="page-title">Ollama 本地运行大模型</h1>
+        </nav>
+    </header>
+
+    <div class="page-container">
+        <!-- 左侧导航 -->
+        <nav class="side-nav">
+            <ul>
+                <li><a href="#a">下载 Ollama 软件</a></li>
+                <li><a href="#b">查找模型</a></li>
+                <li><a href="#c">下载并运行模型</a></li>
+                <li><a href="#d">拓展-修改模型路径</a></li>
+                <li><a href="#e">拓展-注册自定义模型</a></li>
+                <li><a href="#f">拓展-接口调用</a></li>
+            </ul>
+        </nav>
+
+        <main class="tutorial-content">
+            <div class="tutorial-section">
+                <div id="a">
+                    <h2 style="text-align: center;">下载 Ollama 软件</h2>
+                        <ul>
+                            <p>进入 Ollama 官网 <a href="https://ollama.com" target="_blank">https://ollama.com</a></p>
+                            <div class="center-img">
+                                <img src="../../../blogs/imgs/AI/02 Ollama-01.png">
+                            </div>
+                            <div class="center-img">
+                                <img src="../../../blogs/imgs/AI/02 Ollama-02.png">
+                            </div>
+                            <p>点击“Download —— Windows —— Download for Windows” 下载 Ollama.exe</p>
+                            <p>下载完成后直接运行 Ollama.exe 一直点击下一步即可</p>
+                        </ul>
+                </div>
+                <div id="b">
+                    <h2 style="text-align: center;">查找模型</h2>
+                        <ul>
+                            <p>点击右上角“Models”查看在Ollama中可用的模型</p>
+                            <div class="center-img">
+                                <img src="../../../blogs/imgs/AI/02 Ollama-03.png">
+                            </div>
+                        </ul>
+                </div>
+                <div id="c">
+                    <h2 style="text-align: center;">下载并运行模型</h2>
+                        <ul>
+                            <p>以deepseek-r1为例，鼠标左键点击后进入模型详情页，此页面提供当前模型可供下载的版本</p>
+                            <div class="center-img">
+                                <img src="../../../blogs/imgs/AI/02 Ollama-04.png">
+                            </div>
+                            <p>找到其中一个当前电脑能够运行的版本，一般情况下：可选参数 ≈ 显存 / 2，我这里是4060 8G，所以就选择deepseek-r1:1.5b。在Ollama上复制此模型ID。</p>
+                            <div class="center-img">
+                                <img src="../../../blogs/imgs/AI/02 Ollama-05.png">
+                            </div>
+                            <p>打开CMD运行 Ollama</p>
+                            <p>输入：Ollama run deepseek-r1:1.5b</p>
+                            <p>完成命令输入后会自动下载此模型，下载速度取决于网速，耐心等待即可</p>
+                            <div class="center-img">
+                                <img src="../../../blogs/imgs/AI/02 Ollama-06.png">
+                            </div>
+                            <p>下载完成后自动运行，如果没有运行起来，则再执行一次：Ollama run deepseek-r1:1.5b</p>
+                            <p>模型运行起来之后，就可以进行对话啦~</p>
+                            <div class="center-img">
+                                <img src="../../../blogs/imgs/AI/02 Ollama-07.png">
+                            </div>
+                        </ul>
+                </div>
+                <div id="d">
+                    <h2 style="text-align: center;">拓展-修改模型路径</h2>
+                        <ul>
+                            <p>Ollama 下载模型的默认路径：C:\Users\Administrator\.ollama\models</p>
+                            <p>下面来修改这个模型的路径，打开Windows搜索“环境变量”</p>
+                            <div class="center-img">
+                                <img src="../../../blogs/imgs/AI/02 Ollama-08-环境变量-01.png">
+                            </div>
+                            <p>点击“环境变量-新建”，在弹出的“新建系统变量”窗口中填入以下信息</p>
+                               <ul><li>变量名：OLLAMA_MODELS</li></ul>
+                               <ul><li>变量值：你想要指定的路径</li></ul>
+                            <div class="center-img">
+                                <img src="../../../blogs/imgs/AI/02 Ollama-08-环境变量-02.png">
+                            </div>
+                        </ul>
+                </div>
+                <div id="e">
+                    <h2 style="text-align: center;">拓展-注册自定义模型</h2>
+                        <ul>
+                            <p>进入本地磁盘中的模型路径，我这里 D:\HAWKAI\FT_LocalLLM\Qwen2.5-1.5b-chouxianghuifu-05</p>
+                            <p>确保此目录拥有Modelfile文件，并正确指定模型路径（即文件内：FROM .）</p>
+                            <div class="center-img">
+                                <img src="../../../blogs/imgs/AI/02 Ollama-09-注册自定义模型-01.png">
+                            </div>
+                            <p>直接在此路径下打开CMD，或打开CMD命令，进入此路径</p>
+                            <ul><li>创建模型：ollama create [yourmodelname]</li></ul>
+                            <ul><li>运行模型：ollama run [yourmodelname]</li></ul>
+                            <div class="center-img">
+                                <img src="../../../blogs/imgs/AI/02 Ollama-09-注册自定义模型-02.png">
+                            </div>
+                        </ul>
+                </div>
+                <div id="f">
+                    <h2 style="text-align: center;">拓展-接口调用</h2>
+                        <ul>
+                            <p>根节点：http://localhost:11434</p>
+                            <p>1.生成请求（流式）</p>
+                            <ul><li>请求</li></ul>
+                            <div class="code-container">
+                            <button class="copy-button" onclick="copyCode(this)">复制</button>
+                            <pre><code class="language-csharp">curl http://localhost:11434/api/generate -d '{
+  "model": "llama3.2",
+  "prompt": "Why is the sky blue?"
+}'</code></pre>
+                            <ul><li>响应</li></ul>
+                            <div class="code-container">
+                            <button class="copy-button" onclick="copyCode(this)">复制</button>
+                            <pre><code class="language-csharp">{
+  "model": "llama3.2",
+  "created_at": "2023-08-04T08:52:19.385406455-07:00",
+  "response": "The",
+  "done": false
+}</code></pre>
+                            <p>2.列出本地模型</p>
+                            <ul><li>请求</li></ul>
+                            <pre><code class="language-csharp">curl http://localhost:11434/api/tags</code></pre>
+                            <ul><li>响应</li></ul>
+                            <pre><code class="language-csharp">{
+  "models": [
+    {
+      "name": "codellama:13b",
+      "modified_at": "2023-11-04T14:56:49.277302595-07:00",
+      "size": 7365960935,
+      "digest": "9f438cb9cd581fc025612d27f7c1a6669ff83a8bb0ed86c94fcf4c5440555697",
+      "details": {
+        "format": "gguf",
+        "family": "llama",
+        "families": null,
+        "parameter_size": "13B",
+        "quantization_level": "Q4_0"
+      }
+    },
+    {
+      "name": "llama3:latest",
+      "modified_at": "2023-12-07T09:32:18.757212583-08:00",
+      "size": 3825819519,
+      "digest": "fe938a131f40e6f6d40083c9f0f430a515233eb2edaa6d72eb85c50d64f2300e",
+      "details": {
+        "format": "gguf",
+        "family": "llama",
+        "families": null,
+        "parameter_size": "7B",
+        "quantization_level": "Q4_0"
+      }
+    }
+  ]
+}
+                            </code></pre>
+                            <p>3.列出正在运行的模型</p>
+                            <ul><li>请求</li></ul>
+                            <pre><code class="language-csharp">curl http://localhost:11434/api/ps</code></pre>
+                            <ul><li>响应</li></ul>
+                            <pre><code class="language-csharp">{
+  "models": [
+    {
+      "name": "mistral:latest",
+      "model": "mistral:latest",
+      "size": 5137025024,
+      "digest": "2ae6f6dd7a3dd734790bbbf58b8909a606e0e7e97e94b7604e0aa7ae4490e6d8",
+      "details": {
+        "parent_model": "",
+        "format": "gguf",
+        "family": "llama",
+        "families": [
+          "llama"
+        ],
+        "parameter_size": "7.2B",
+        "quantization_level": "Q4_0"
+      },
+      "expires_at": "2024-06-04T14:38:31.83753-07:00",
+      "size_vram": 5137025024
+    }
+  ]
+}
+                            </code></pre>
+                            <p>4.删除模型</p>
+                            <ul><li>请求</li></ul>
+                            <pre><code class="language-csharp">curl -X DELETE http://localhost:11434/api/delete -d '{
+  "model": "llama3:13b"
+}'</code></pre>
+                            <ul><li>响应</li></ul>
+                            <ul><p>如果成功，返回 200 OK；如果要删除的模型不存在，则返回 404 Not Found。</p></ul>
+                            
+                        </div>
+                        </ul>
+                        
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        <div class="footer-bottom">
+            <p>&copy; 2025 橘然是你的Bug 保留所有权利。</p>
+        </div>
+    </footer>
+
+    <script>
+        // 添加导航高亮效果
+        document.addEventListener('DOMContentLoaded', () => {
+            const navLinks = document.querySelectorAll('.side-nav a');
+            
+            // 监听滚动事件
+            window.addEventListener('scroll', () => {
+                const fromTop = window.scrollY + 100;
+
+                navLinks.forEach(link => {
+                    const section = document.querySelector(link.hash);
+                    
+                    if (section.offsetTop <= fromTop &&
+                        section.offsetTop + section.offsetHeight > fromTop) {
+                        link.classList.add('active');
+                    } else {
+                        link.classList.remove('active');
+                    }
+                });
+            });
+
+            // 点击导航链接时平滑滚动
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    const navbarHeight = document.querySelector('.navbar').offsetHeight;
+                    
+                    window.scrollTo({
+                        top: targetSection.offsetTop - navbarHeight,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        });
+
+        // 添加点赞按钮的点击事件
+        const likeButton = document.getElementById('likeButton');
+        let isLiked = false;
+
+        likeButton.addEventListener('click', () => {
+            isLiked = !isLiked;
+            if (isLiked) {
+                likeButton.classList.add('liked');
+                setTimeout(() => {
+                    likeButton.classList.remove('liked');
+                }, 500);
+            }
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-csharp.min.js"></script>
+    <script>
+        function copyCode(button) {
+            const codeBlock = button.nextElementSibling;
+            const code = codeBlock.textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const originalText = button.textContent;
+                button.textContent = '已复制';
+                setTimeout(() => {
+                    button.textContent = originalText;
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
