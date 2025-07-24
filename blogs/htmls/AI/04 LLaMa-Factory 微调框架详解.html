@@ -121,6 +121,57 @@
             border-bottom: 2px solid #3498db;
         }
 
+        .tutorial-section h3 {
+            color: #5dade2;
+            font-size: 1.5em;
+            margin: 25px 0 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #5dade2;
+            transition: all 0.3s ease;
+        }
+
+        .tutorial-section h4 {
+            color: #85c1e9;
+            font-size: 1.3em;
+            margin: 20px 0 12px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #85c1e9;
+            transition: all 0.3s ease;
+        }
+
+        .tutorial-section h5 {
+            color: #aed6f1;
+            font-size: 1.2em;
+            margin: 18px 0 10px;
+            padding-bottom: 4px;
+            border-bottom: 1px dotted #aed6f1;
+            transition: all 0.3s ease;
+        }
+
+        .tutorial-section h3.in-view {
+            color: #2980b9;
+            border-bottom-color: #2980b9;
+            background: linear-gradient(90deg, transparent, rgba(52, 152, 219, 0.1), transparent);
+            padding-left: 10px;
+            border-radius: 4px;
+        }
+
+        .tutorial-section h4.in-view {
+            color: #3498db;
+            border-bottom-color: #3498db;
+            background: linear-gradient(90deg, transparent, rgba(93, 173, 226, 0.1), transparent);
+            padding-left: 8px;
+            border-radius: 3px;
+        }
+
+        .tutorial-section h5.in-view {
+            color: #5dade2;
+            border-bottom-color: #5dade2;
+            background: linear-gradient(90deg, transparent, rgba(133, 193, 233, 0.1), transparent);
+            padding-left: 6px;
+            border-radius: 2px;
+        }
+
         .tutorial-section p {
             font-size: 1.1em;
             line-height: 1.8;
@@ -335,9 +386,32 @@
             <ul>
                 <li><a href="#a">安装</a></li>
                 <li><a href="#b">模型&基础设置</a></li>
-                <li><a href="#c">微调方法</a></li>
-                <li><a href="#d">量化&加速参数</a></li>
-                <li><a href="#e">训练方法及数据集描述</a></li>
+                <li>
+                    <a href="#c">微调方法</a>
+                    <ul>
+                        <a href="#c1">1.full 全参数微调</a>
+                        <a href="#c2">2.Freeze 冻结</a>
+                        <a href="#c3">3.LoRA 低秩适配</a>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#d">量化&加速参数</a>
+                    <ul>
+                        <a href="#d1">1.量化等级</a>
+                        <a href="#d2">2.量化方法</a>
+                        <a href="#d3">3.对话模板</a>
+                        <a href="#d4">4.RoPE插值</a>
+                        <a href="#d5">5.加速方式</a>
+                    </ul>
+                </li>
+                <li><a href="#e">训练方法及数据集描述</a>
+                    <ul>
+                        <a href="#e1">1.监督微调（SFT）</a>
+                        <a href="#e2">2.人类反馈强化学习（RLHF）</a>
+                        <a href="#e3">3.直接偏好优化（DPO）</a>
+                        <a href="#e4">4.KTO（模型对齐）</a>
+                    </ul>
+                </li>
             </ul>
         </nav>
 
@@ -399,17 +473,17 @@ cd D:\</code></pre>
                             <div class="center-img">
                                 <img src="../../../blogs/imgs/AI/04 LLaMa-Factory 微调框架详解-03.png">
                             </div>
-                            <h3>1.full（Full-tuning） 全参数微调</h3>
+                            <h3 id="c1">1.full（Full-tuning） 全参数微调</h3>
                             <p>原理：加载预训练好的模型，将其所有参数都纳入训练范围。利用任务数据，以降低误差等为目标，对每个参数进行更新，使模型全面适应新任务。</p>
                             <ul><li>优点：模型适应性最大，能深度学习新任务，对于数据多、任务复杂的情况，往往能达到最佳性能，表现力强。</li></ul>
                             <ul><li>缺点：计算资源消耗大，训练时间长，需要高端硬件支持，成本较高。</li></ul>
                             <ul><li>适用场景：数据量充足、任务复杂且拥有良好计算设备的场景。</li></ul>
-                            <h3>2.Freeze冻结</h3>
+                            <h3 id="c2">2.Freeze冻结</h3>
                             <p>原理：冻结模型的部分参数，通常是底层参数，只对模型的“顶层”进行调整。使用任务数据仅训练解冻的参数，而冻结部分保持预训练时的状态。</p>
                             <ul><li>优点：相比全参数微调，训练速度更快，因为需要训练的参数数量大幅减少，降低了计算资源需求。</li></ul>
                             <ul><li>缺点：模型适应新任务的能力相对全参数微调较弱，因为不是所有参数都参与调整，对于复杂且与预训练任务差异大的新任务，可能表现不佳。</li></ul>
                             <ul><li>适用场景：适用于与预训练任务有一定相关性，但又需要快速调整模型以适应新任务的场景，或者计算资源有限，无法进行全参数微调的情况。</li></ul>
-                            <h3>3.LoRA（Low-Rank Adaptation）低秩适配</h3>
+                            <h3 id="c3">3.LoRA（Low-Rank Adaptation）低秩适配</h3>
                             <p>原理：保持 LLM 的预训练层固定，将可训练秩分解矩阵注入模型的每一层。通过低秩分解对模型参数的更新进行建模，仅优化这些秩分解矩阵，产生近似于从完全微调中导出的更新结果，而不是直接微调预训练层中的参数。</p>
                             <ul><li>优点：减少了可训练参数数量，大幅降低内存需求，训练速度快、效率高。可以保存多个小型适配器，针对不同任务灵活切换，且由于训练参数少，减少了过拟合风险。</li></ul>
                             <ul><li>缺点：在某些极端情况下，性能可能略逊于全参数微调，但通常能接近其性能。</li></ul>
@@ -423,12 +497,12 @@ cd D:\</code></pre>
                                 <img src="../../../blogs/imgs/AI/04 LLaMa-Factory 微调框架详解-04.png">
                             </div>
 
-                            <h3>1. 量化等级（Bits）</h3>
+                            <h3 id="d1">1. 量化等级（Bits）</h3>
                             <p>量化等级：指的是模型参数的位宽，常用的有8位、16位、32位等。位宽越高，模型的表示能力越强，但是计算量也会越大，因此需要根据实际情况进行选择。</p>
                             <ul><li>4-bit：将权重压缩至 4 位，内存占用约为 FP16 的 1/4，适合资源受限场景（如消费级 GPU）。</li></ul>
                             <ul><li>8-bit：将权重压缩至 8 位，内存占用约为 FP16 的 1/2，精度损失更小，适合对性能敏感的任务。</li></ul>
 
-                            <h3>2. 量化方法</h3>
+                            <h3 id="d2">2. 量化方法</h3>
                             <p>指的是将模型参数从浮点数转换为低比特整数的过程。</p>
                             <p>2.1 bnb（BitsAndBytes）低比特量化库</p>
                             <ul><li>低比特量化库</li></ul>
@@ -444,10 +518,10 @@ cd D:\</code></pre>
                             <ul><li>缺点：不支持低于 8-bit 的量化。</li></ul>
                             <p>选择建议：训练优先选 bnb（支持LoRA微调），移动端推理优先选HQQ，保证通用性高性能推理服务选EETQ。</p>
                         
-                            <h3>3. 对话模板</h3>
+                            <h3 id="d3">3. 对话模板</h3>
                             <p>定义用户输入和模型输出的格式，优先使用目标模型官方推荐的模板。自定义模板需确保[INST]和[/INST]等特殊标记与模型训练时一致。</p>
 
-                            <h3>4. RoPE 插值方法</h3>
+                            <h3 id="d4">4. RoPE 插值方法</h3>
                             <p>RoPE（旋转位置编码）插值用于扩展模型上下文长度，通过旋转位置编码来引入位置信息，从而使模型能够处理更长的序列。</p>
                             <p>4.1 linear</p>
                             <p>线性插值，简单直接但可能引入精度损失。</p>
@@ -466,7 +540,7 @@ cd D:\</code></pre>
                             <ul><li>优点：极端长文本推理效果最佳。</li></ul>
                             <ul><li>缺点：比linear或YARN更高的硬件要求，Llama3的专属优化。</li></ul>
                             
-                            <h3>5. 加速方式</h3>
+                            <h3 id="d5">5. 加速方式</h3>
                             <p>优化模型计算效率的技术</p>
                             <p>5.1 auto</p>
                             <p>自动选择适合当前硬件的加速方法，默认选项。</p>
@@ -491,7 +565,7 @@ cd D:\</code></pre>
                                 <img src="../../../blogs/imgs/AI/04 LLaMa-Factory 微调框架详解-05.png">
                             </div>
 
-                            <h3>1 监督微调（SFT）</h3>
+                            <h3 id="e1">1 监督微调（SFT）</h3>
                             <p>Supervised Fine-Tuning 基于预训练模型，使用标注的监督数据（如输入-输出对）进行微调，使模型适应特定任务，在对话数据上微调大模型以生成符合人类意图的回复。</p>
                             <ul><li>优点 ：</li></ul>
                             <ul><ul><li>简单高效，直接利用标注数据优化模型性能。</li></ul></ul>
@@ -503,7 +577,7 @@ cd D:\</code></pre>
                             <ul><ul><li>instruction（指令） ：明确告诉模型需要执行的任务（如“翻译成法语”“总结文本”）。</li></ul></ul>
                             <ul><ul><li>input（输入） ：任务的具体输入内容（如待翻译的英文句子）。</li></ul></ul>
                             <ul><ul><li>output（输出） ：任务的具体输出内容（如翻译后的法语句子）。</li></ul></ul>
-                            <ul><li>示例 1 ：单轮对话数据集格式</li></ul>
+                            <ul><li>示例 1 ：单轮对话数据集格式</li>
                             <div class="code-container">
                             <button class="copy-button" onclick="copyCode(this)">复制</button>
                             <pre><code class="language-csharp">//纯指令跟随（Instruction Tuning），输入字段可能为空（input 为空），仅依赖 instruction 生成输出
@@ -566,9 +640,9 @@ cd D:\</code></pre>
     "system": "system",
     "history": "history"
   }
-}</code></pre>
+}</code></pre></ul>
 
-                            <h3>2 人类反馈强化学习（RLHF）</h3>
+                            <h3 id="e2">2 人类反馈强化学习（RLHF）</h3>
                             <p>Reinforcement Learning from Human Feedback 通过人类对智能体行为的直接评价，如偏好排序、评分或修正，动态调整模型的优化目标，使智能体在复杂、模糊的任务中逐步逼近人类期望的行为模式。</p>
                             <p>RM 提供奖励信号（反馈） → PPO 利用这些信号来优化语言模型 → 生成更符合人类偏好的输出。</p>
                             <ul><li>优点 ：</li></ul>
@@ -576,8 +650,8 @@ cd D:\</code></pre>
                             <ul><ul><li>支持复杂任务（如长文本生成）的优化。</li></ul></ul>
                             <ul><li>缺点 ：</li></ul>
                             <ul><ul><li>需大量人工标注的偏好数据，成本高昂。</li></ul></ul>
-                            <ul><ul><li>奖励模型可能存在偏差，影响下游训练效果。</li></ul></ul>
-                                <h4>2.1 奖励模型（RM）</h4>
+                            <ul><li>奖励模型可能存在偏差，影响下游训练效果。</li></ul>
+                                <ul><h4>2.1 奖励模型（RM）</h4>
                                 <p>Reward Modeling 训练一个奖励模型，通过人类偏好数据评估生成文本的质量，为强化学习提供奖励信号。</p>
                                 <ul><li>适用场景 ：</li></ul>
                                 <ul><ul><li>RLHF（人类反馈强化学习）流程中的核心步骤。</li></ul></ul>
@@ -597,7 +671,7 @@ cd D:\</code></pre>
         "preference_rank": 1
       },
       {
-        "text": "焦虑没什么大不了的，别想太多。",
+        "text": "焦虑没什么大所述的，别想太多。",
         "preference_rank": 2
       }
     ]
@@ -642,10 +716,10 @@ cd D:\</code></pre>
     "response": "夏日的阳光洒在沙滩上，海浪轻轻拍打着岸边，孩子们欢笑着追逐着海鸥。",
     "reward": 4.8
   }
-]</code></pre>
+]</code></pre></ul>
 
 
-                            <h3>3 直接偏好优化（DPO）</h3>
+                            <h3 id="e3">3 直接偏好优化（DPO）</h3>
                             <p>Direct Preference Optimization 直接利用人类偏好数据优化模型，无需显式训练奖励模型。基于偏好的语言模型对齐方法，直接从成对的 chosen 和 rejected 回答中优化策略 ，让模型学会生成更多“优质回答”。</p>
                             <ul><li>优点 ：</li></ul>
                             <ul><ul><li>简化传统RLHF流程，减少计算和数据成本。</li></ul></ul>
@@ -661,7 +735,7 @@ cd D:\</code></pre>
                             <ul><ul><li>input（输入）：任务的具体输入内容。</li></ul></ul>
                             <ul><ul><li>chosen（优质回答）：期望的模型输出。</li></ul></ul>
                             <ul><ul><li>rejected（劣质回答）：（必填）</li></ul></ul>
-                            <div class="code-container">
+                            <ul><div class="code-container">
                             <button class="copy-button" onclick="copyCode(this)">复制</button>
                             <pre><code class="language-csharp">[
   {
@@ -688,10 +762,10 @@ cd D:\</code></pre>
     "chosen": "chosen",
     "rejected": "rejected"
   }
-}</code></pre>
+}</code></pre></ul>
 
 
-                            <h3>4 KTO（模型对齐）</h3>
+                            <h3 id="e4">4 KTO（模型对齐）</h3>
                             <p>Knowledge Transfer Optimization KTO 数据集通过 true/false 标签这种轻量级的人类反馈数据形式，适用于基于人类判断的模型训练，但其反馈粒度较粗，不适合用于精细的偏好学习任务。 chosen 和 rejected 回答中优化策略 ，让模型学会生成更多“优质回答”。</p>
                             <ul><li>优点 ：</li></ul>
                             <ul><ul><li>只需判断“是”或“否”，降低标注成本和复杂度。</li></ul></ul>
@@ -767,18 +841,30 @@ cd D:\</code></pre>
             
             // 监听滚动事件
             window.addEventListener('scroll', () => {
-                const fromTop = window.scrollY + 100;
+                const fromTop = window.scrollY + 120;
 
+                // 移除所有active类
+                navLinks.forEach(link => link.classList.remove('active'));
+                
+                // 查找当前可见的section
+                let currentSection = null;
+                let maxOffset = -Infinity;
+                
                 navLinks.forEach(link => {
                     const section = document.querySelector(link.hash);
-                    
-                    if (section.offsetTop <= fromTop &&
-                        section.offsetTop + section.offsetHeight > fromTop) {
-                        link.classList.add('active');
-                    } else {
-                        link.classList.remove('active');
+                    if (section && section.offsetTop <= fromTop) {
+                        // 选择最接近滚动位置的section
+                        if (section.offsetTop > maxOffset) {
+                            maxOffset = section.offsetTop;
+                            currentSection = link;
+                        }
                     }
                 });
+                
+                // 如果有匹配的section，添加active类
+                if (currentSection) {
+                    currentSection.classList.add('active');
+                }
             });
 
             // 点击导航链接时平滑滚动
@@ -787,10 +873,13 @@ cd D:\</code></pre>
                     e.preventDefault();
                     const targetId = link.getAttribute('href');
                     const targetSection = document.querySelector(targetId);
+                    if (!targetSection) return;
+                    
                     const navbarHeight = document.querySelector('.navbar').offsetHeight;
+                    const offset = navbarHeight + 30;
                     
                     window.scrollTo({
-                        top: targetSection.offsetTop - navbarHeight,
+                        top: targetSection.offsetTop - offset,
                         behavior: 'smooth'
                     });
                 });
@@ -798,17 +887,41 @@ cd D:\</code></pre>
         });
 
         // 添加点赞按钮的点击事件
-        const likeButton = document.getElementById('likeButton');
-        let isLiked = false;
+        const likeButton = document.querySelector('.like-button');
+        if (likeButton) {
+            let isLiked = false;
+            likeButton.addEventListener('click', () => {
+                isLiked = !isLiked;
+                if (isLiked) {
+                    likeButton.classList.add('liked');
+                    setTimeout(() => {
+                        likeButton.classList.remove('liked');
+                    }, 500);
+                }
+            });
+        }
 
-        likeButton.addEventListener('click', () => {
-            isLiked = !isLiked;
-            if (isLiked) {
-                likeButton.classList.add('liked');
-                setTimeout(() => {
-                    likeButton.classList.remove('liked');
-                }, 500);
-            }
+        // 子级标题滚动高亮效果
+        const observerOptions = {
+            root: null,
+            rootMargin: '0% 0px -90% 0px',
+            threshold: 0
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                } else {
+                    entry.target.classList.remove('in-view');
+                }
+            });
+        }, observerOptions);
+
+        // 观察所有子级标题
+        const subHeadings = document.querySelectorAll('.tutorial-section h3, .tutorial-section h4, .tutorial-section h5');
+        subHeadings.forEach(heading => {
+            observer.observe(heading);
         });
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
@@ -828,3 +941,13 @@ cd D:\</code></pre>
     </script>
 </body>
 </html>
+<style>
+.side-nav ul ul {
+  padding-left: 20px;
+  list-style: circle;
+}
+.side-nav li li a {
+  font-size: 0.9em;
+  padding: 8px;
+}
+</style>
