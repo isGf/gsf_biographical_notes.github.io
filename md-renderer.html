@@ -273,6 +273,9 @@
                     // 处理相对路径，转换为相对于根目录的路径
                     let imagePath = src.trim();
                     
+                    // 移除URL编码的空格
+                    imagePath = decodeURIComponent(imagePath);
+                    
                     if (imagePath.startsWith('../')) {
                         // 处理 ../../../blogs/imgs/... 的情况
                         // 直接去掉前面的../，保留后面的路径
@@ -287,7 +290,10 @@
                         imagePath = 'blogs/' + imagePath;
                     }
                     
-                    return `<img alt="${alt}" src="${imagePath}" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer;" onclick="window.open('${imagePath}', '_blank')" />`;
+                    // 处理空格字符
+                    imagePath = imagePath.replace(/\s/g, '%20');
+                    
+                    return `<img alt="${alt}" src="${imagePath}" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer;" onclick="window.open('${imagePath}', '_blank')" onerror="this.style.display='none'; console.error('图片加载失败:', this.src)" />`;
                 });
                 
                 // 处理链接（在图片之后处理，避免影响图片语法）
