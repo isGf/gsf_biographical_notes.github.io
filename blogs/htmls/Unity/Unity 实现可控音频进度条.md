@@ -23,7 +23,7 @@
 using UnityEngine;
 using UnityEngine.UI;
  
-public class SZJCAudioProgressBar : MonoBehaviour
+public class SZJCAudioProgressBar : MonoBehaviour 
 {
     public AudioSource audioSource;        // 音频源
     public Slider progressBar;              // 进度条
