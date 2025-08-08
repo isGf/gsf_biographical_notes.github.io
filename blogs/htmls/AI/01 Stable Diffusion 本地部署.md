@@ -7,7 +7,7 @@
 
 ## 下载源码
 
-https://github.com/AUTOMATIC1111/stable-diffusion-webui
+[Stable Diffusion WebUI](https://github.com/AUTOMATIC1111/stable-diffusion-webui)
 
 ## 修改批处理文件
 
@@ -46,7 +46,7 @@ https://github.com/AUTOMATIC1111/stable-diffusion-webui
 
 1.在webui界面选择Extensions（扩展）选项卡，选择选择Install From URL选项卡
    ![步骤8](../../../blogs/imgs/AI/01 Stable Diffusion 本地部署-08.png)
-2.填入中文包地址https://github.com/VinsonLaro/stable-diffusion-webui-chinese点击Install下载
+2.填入中文包地址`https://github.com/VinsonLaro/stable-diffusion-webui-chinese`点击Install下载
    ![步骤9](../../../blogs/imgs/AI/01 Stable Diffusion 本地部署-09.png)
 3.下载完成后选择Settings（设置）选项卡，进入User interface子选项卡，选择Chinese（中文）界面
    ![步骤10](../../../blogs/imgs/AI/01 Stable Diffusion 本地部署-10.png)
