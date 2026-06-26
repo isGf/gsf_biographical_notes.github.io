@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh" id="top">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>橘（居）然是你的Bug</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .fade-in {
+            animation: fadeIn 1s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .navbar {
+            padding: 10px;
+        }
+
+        .logo img {
+            width: 150px;
+            height: auto;
+            margin-left: 20px;
+        }
+
+        .nav-links li {
+            font-size: 14px;
+        }
+
+        .theme-toggle {
+            font-size: 14px;
+            margin-right: 20px;
+        }
+
+        .nav-links li a {
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .nav-links li a:hover {
+            background-color: #007BFF;
+            color: white;
+        }
+
+        .nav-links li a.active {
+            background-color: #0056b3;
+            color: white;
+        }
+
+
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                　　　　　
+            </div>
+            <ul class="nav-links">
+                <li><a href="#Blog">个人博客（技术向）</a></li>
+                <li><a href="#Trick">AI实用技巧（非技术向）</a></li>
+                <li><a href="#Orange">关于橘座</a></li>
+            </ul>
+            <button class="theme-toggle">
+                <span class="theme-icon">🌙</span>
+                <span class="theme-text">切换主题</span>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1 class="fade-in">橘（居）然是你的Bug</h1>
+            <p class="subtitle fade-in">Blog & Trick & Orange</p>
+        </section>
+
+        <section id="Blog" class="Blog">
+            <h2>个人博客（技术向）</h2>
+            <!-- Unity分类 -->
+            <div class="category-section">
+                <h3>Unity 系列</h3>
+                <div class="features-grid">
+                    <!-- Unity相关文章卡片 -->
+                    <div class="feature-card new-style">
+                        <img src="blogs/imgs/Unity/unity-tools-tree-cover.png" alt="Unity 自用工具静态类封面">
+                        <h4>Unity 自用工具静态类</h4>
+                        <div class="date">2025年3月11日</div>
+                        <p>　　定义了诸多自用工具静态类，包括封装协程延迟、扩展方法、IO操作、各种Get等...</p>
+                        <div class="card-footer">
+                            <div class="author">橘然</div>
+                            <a href="md-renderer.html?file=blogs/htmls/Unity/Unity 自用工具静态类.md" class="learn-more">查看</a>
+                        </div>
+                    </div>
+                    <div class="feature-card new-style">
+                        <img src="blogs/imgs/Unity/02 音频进度条-2.png" alt="Unity 实现可控音频进度条封面">
+                        <h4>Unity 实现可控音频进度条</h4>
+                        <div class="date">2025年7月18日</div>
+                        <p>　　基于UGUI-Slider组件，实现可视化音频进度以及可控制的音频进度条</p>
+                        <div class="card-footer">
+                            <div class="author">橘然</div>
+                            <a href="md-renderer.html?file=blogs/htmls/Unity/Unity 实现可控音频进度条.md" class="learn-more">查看</a>
+                        </div>
+                    </div>
+                    <div class="feature-card new-style">
+                        <img src="blogs/imgs/Unity" alt="占位封面" data-placeholder="即将更新">
+                        <h4>××Unity zSpace开发&问题记录</h4>
+                        <div class="date">2025年7月18日</div>
+                        <p>　　本篇博客介绍zSpace开发，从下载SDK到配置发布、UI事件、触控笔事件</p>
+                        <div class="card-footer">
+                            <div class="author">橘然</div>
+                            <a href="md-renderer.html?file=blogs/htmls/Unity/Unity zSpace开发&问题记录.md" class="learn-more">查看</a>
+                        </div>
+                    </div>
+                    <div class="feature-card new-style">
+                        <img src="blogs/imgs/Unity" alt="占位封面" data-placeholder="即将更新">
+                        <h4>××Untiy HTC Vive VRTK 开发记录</h4>
+                        <div class="date">2025年7月18日</div>
+                        <p>　　此篇记录在开发过程中所使用到的VR功能，可以借鉴本篇中解释的相关功能</p>
+                        <div class="card-footer">
+                            <div class="author">橘然</div>
+                            <a href="md-renderer.html?file=blogs/htmls/Unity/HTC Vive VRTK 开发记录.md" class="learn-more">查看</a>
+                        </div>
+                    </div>
+                    <div class="feature-card new-style">
+                        <img src="blogs/imgs/Unity/软体管-封面.png" alt="Unity 软性管的实现封面">
+                        <h4>Unity 软性管的实现</h4>
+                        <div class="date">2025年7月18日</div>
+                        <p>　　该篇主要说明水管这种软性管的模拟的实现和应用</p>
+                        <div class="card-footer">
+                            <div class="author">橘然</div>
+                            <a href="md-renderer.html?file=blogs/htmls/Unity/Unity 软性管的实现.md" class="learn-more">查看</a>
+                        </div>
+                    </div>
+                    <div class="feature-card new-style">
+                        <img src="blogs/imgs/Unity/05放大镜.png" alt="占位封面" data-placeholder="即将更新">
+                        <h4>Unity 模拟放大镜效果</h4>
+                        <div class="date">2025年7月18日</div>
+                        <p>　　模拟出真实放大镜效果，使用Unity自带Camera以及Render Texture实现（无代码）</p>
+                        <div class="card-footer">
+                            <div class="author">橘然</div>
+                            <a href="md-renderer.html?file=blogs/htmls/Unity/Unity 模拟放大镜效果.md" class="learn-more">查看</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- AI分类 -->
+            <div class="category-section">
+                <h3>AI 系列</h3>
+                <div class="features-grid">
+                    <!-- AI相关文章卡片 -->
+                    <div class="feature-card new-style">
+                        <img src="blogs/imgs/AI/01 Stable Diffusion 本地部署.png" alt="Stable Diffusion 本地部署封面">
+                        <h4>Stable Diffusion 本地部署</h4>
+                        <div class="date">2023年10月5日</div>
+                        <p>　　在Windows10运行环境下，进行文生图框架Stable Diffusion 本地部署</p>
+                        <div class="card-footer">
+                            <div class="author">橘然</div>
+                            <a href="md-renderer.html?file=blogs/htmls/AI/01 Stable Diffusion 本地部署.md" class="learn-more">查看</a>
+                        </div>
+                    </div>
+
+                    <div class="feature-card new-style">
+                        <img src="blogs/imgs/AI/02 Ollama-封面.png" alt="Ollama 本地运行大模型封面">
+                        <h4>Ollama 本地运行大模型</h4>
+                        <div class="date">2023年10月5日</div>
+                        <p>　　本地开源大语言模型运行框架，本篇介绍基本使用以及进阶使用</p>
+                        <div class="card-footer">
+                            <div class="author">橘然</div>
+                            <a href="md-renderer.html?file=blogs/htmls/AI/02 Ollama 本地运行大模型.md" class="learn-more">查看</a>
+                        </div>
+                    </div>
+
+                    <div class="feature-card new-style">
+                        <img src="blogs/imgs/AI/03 Dify 实现文生PPT-封面.png" alt="Dify 实现文生PPT封面">
+                        <h4>Dify 实现文生PPT</h4>
+                        <div class="date">2023年10月5日</div>
+                        <p>　　Marp-cli 本地部署及与 Flask、Dify 结合实现完全本地化文生PPT功能</p>
+                        <div class="card-footer">
+                            <div class="author">橘然</div>
+                            <a href="md-renderer.html?file=blogs/htmls/AI/03 Dify 实现文生PPT.md" class="learn-more">查看</a>
+                        </div>
+                    </div>
+
+                    <div class="feature-card new-style">
+                        <img src="blogs/imgs/AI/04 LLaMa-Factory 微调框架详解-封面.png" alt="LLaMa-Factory 微调框架详解封面">
+                        <h4>LLaMa-Factory 微调框架详解</h4>
+                        <div class="date">2023年10月5日</div>
+                        <p>　　LLaMa-Factory 模型微调框架详解，内含微调方法、训练方法、各类超参数的说明</p>
+                        <div class="card-footer">
+                            <div class="author">橘然</div>
+                            <a href="md-renderer.html?file=blogs/htmls/AI/04 LLaMa-Factory 微调框架详解.md" class="learn-more">查看</a>
+                        </div>
+                    </div>
+
+                    <div class="feature-card new-style">
+                        <img src="blogs/imgs/AI/01 YOLO V11 训练与识别-封面.png" alt="YOLO V11 训练与识别封面">
+                        <h4>××YOLO V11 训练与识别</h4>
+                        <div class="date">2023年10月5日</div>
+                        <p>　　YOLO v11 训练与识别</p>
+                        <div class="card-footer">
+                            <div class="author">橘然</div>
+                            <a href="md-renderer.html?file=blogs/htmls/AI/YOLO V11 训练与识别.md" class="learn-more">查看</a>
+                        </div>
+                    </div>
+
+                    <div class="feature-card new-style">
+                        <img src="blogs/imgs/AI/01 HeyGem 数字人-封面.png" alt="HeyGem 数字人封面">
+                        <h4>××HeyGem 数字人</h4>
+                        <div class="date">2023年10月5日</div>
+                        <p>　　HeyGem 数字人</p>
+                        <div class="card-footer">
+                            <div class="author">橘然</div>
+                            <a href="md-renderer.html?file=blogs/htmls/AI/HeyGem 数字人.md" class="learn-more">查看</a>
+                        </div>
+                    </div>
+
+                    <div class="feature-card new-style">
+                        <img src="blogs/imgs/AI/01 FastGPT LLM编排框架-封面.png" alt="FastGPT LLM编排框架封面">
+                        <h4>××FastGPT LLM编排框架</h4>
+                        <div class="date">2023年10月5日</div>
+                        <p>　　HeyGem 数字人</p>
+                        <div class="card-footer">
+                            <div class="author">橘然</div>
+                            <a href="md-renderer.html?file=blogs/htmls/AI/FastGPT LLM编排框架.md" class="learn-more">查看</a>
+                        </div>
+                    </div>
+
+                    <div class="feature-card new-style">
+                        <img src="blogs/imgs/AI/01 LightRAG AI知识图谱-封面.png" alt="LightRAG AI知识图谱封面">
+                        <h4>××LightRAG AI知识图谱</h4>
+                        <div class="date">2023年10月5日</div>
+                        <p>　　HeyGem 数字人</p>
+                        <div class="card-footer">
+                            <div class="author">橘然</div>
+                            <a href="md-renderer.html?file=blogs/htmls/AI/LightRAG AI知识图谱.md" class="learn-more">查看</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 其他分类 -->
+            <div class="category-section">
+                <h3>其他</h3>
+                    <div class="features-grid">
+                    <!-- 其他分类文章卡片 -->
+                    <div class="feature-card new-style">
+                        <img src="blogs/imgs/Other/01 软件工程造价-封面.png" alt="软件工程造价封面">
+                        <h4>××软件工程造价</h4>
+                        <div class="date">2023年10月5日</div>
+                        <p>　　依据诸多标准文件，尽可能标准化的软件行业造价规则整理</p>
+                        <div class="card-footer">
+                            <div class="author">橘然</div>
+                            <a href="md-renderer.html?file=blogs/htmls/Other/01 软件工程造价.md" class="learn-more">查看</a>
+                        </div>
+                    </div>
+                    <div class="feature-card new-style">
+                        <img src="blogs/imgs/Other/02 Docker 使用技巧.png" alt="Docker 使用技巧封面">
+                        <h4>××Docker 使用技巧</h4>
+                        <div class="date">2023年10月5日</div>
+                        <p>　　依据诸多标准文件，尽可能标准化的软件行业造价规则整理</p>
+                        <div class="card-footer">
+                            <div class="author">橘然</div>
+                            <a href="md-renderer.html?file=blogs/htmls/Other/02 Docker 使用技巧.md" class="learn-more">查看</a>
+                        </div>
+                    </div>
+                    <div class="feature-card new-style">
+                        <img src="blogs/imgs/Other/03 Visual Studio 自定义快捷键.png" alt="Visual Studio 自定义快捷键封面">
+                        <h4>××Visual Studio 自定义快捷键</h4>
+                        <div class="date">2023年10月5日</div>
+                        <p>　　依据诸多标准文件，尽可能标准化的软件行业造价规则整理</p>
+                        <div class="card-footer">
+                            <div class="author">橘然</div>
+                            <a href="md-renderer.html?file=blogs/htmls/Other/03 Visual Studio 自定义快捷键.md" class="learn-more">查看</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="more-features">
+                <p>AI事件周报看这里...（补充链接）</p>
+            </div>
+        </section>
+
+        <section id="Trick" class="Trick">
+            <h2>AI实用技巧（非技术向）</h2>
+            <div class="tutorial-grid">
+                <div class="tutorial-card">
+                    <h4>基础概念</h4>
+                    <p>快速了解人工智能基础概念</p>
+                    <a href="md-renderer.html?file=blogs/htmls/Tricks/01 基础概念.md" class="read-more">阅读教程 →</a>
+                </div>
+                <div class="tutorial-card">
+                    <h4>××最佳实践</h4>
+                    <p>学习更多人工智能使用技巧</p>
+                    <a href="md-renderer.html?file=blogs/htmls/Tricks/02 最佳实践.md" class="read-more">阅读教程 →</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="Orange" class="Orange">
+            <h2>关于橘座</h2>
+            <div class="Orange-container">
+                <div class="Orange-item">
+                    <ul class="changes">
+                        <p>其他地址</p>
+                        <li><a href="https://space.bilibili.com/395612781" target="_blank">哔哩哔哩：https://space.bilibili.com/395612781</a></li>
+                        <li><a href="https://blog.csdn.net/qq_42047805?type=blog" target="_blank">CSDN：https://blog.csdn.net/qq_42047805?type=blog</a></li>
+                        <p>联系方式</p>
+                        <li>QQ：578147153</li>
+                        <li>WeChat：GooFy0311</li>
+                        <p>此项目已开源</p>
+                        <li><a href="https://github.com/isGf/gsf_biographical_notes.github.io" target="_blank">GitHub：https://github.com/isGf/gsf_biographical_notes.github.io</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <button id="back-to-top" class="back-to-top" title="返回顶部">
+        ↑
+    </button>
+
+    <footer>
+        <div class="footer-bottom">
+            <p>&copy; 2025 橘然 保留所有权利</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
