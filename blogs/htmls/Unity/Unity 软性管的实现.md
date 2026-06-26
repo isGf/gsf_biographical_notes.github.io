@@ -4,7 +4,7 @@
 
 这个页面当前以资源下载为主，方便直接获取工程资源并导入使用。
 
-[下载 UnityPackage](../../../blogs/downloads/Unity/软体管.unitypackage)
+[下载 UnityPackage](../../../blogs/downloads/Unity/soft-tube.unitypackage)
 
 ## 资源说明
 
