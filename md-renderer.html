@@ -383,6 +383,8 @@
     </div>
 
     <script>
+        let currentMarkdownFile = '';
+
         // 内置的轻量级markdown解析器，无需外部依赖
         const marked = {
             parse: function(text) {
@@ -419,34 +421,15 @@
                 
                 // 处理图片 - 修复相对路径问题（优先处理，避免被链接处理影响）
                 html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, function(match, alt, src) {
-                    // 处理相对路径，转换为相对于根目录的路径
-                    let imagePath = src.trim();
-                    
-                    // 移除URL编码的空格
-                    imagePath = decodeURIComponent(imagePath);
-                    
-                    if (imagePath.startsWith('../')) {
-                        // 处理 ../../../blogs/imgs/... 的情况
-                        // 直接去掉前面的../，保留后面的路径
-                        imagePath = imagePath.replace(/^(\.\.\/)+/, '');
-                    } else if (imagePath.startsWith('./')) {
-                        // 处理 ./ 当前目录
-                        imagePath = imagePath.substring(2);
-                    }
-                    
-                    // 确保路径是相对于根目录的
-                    if (!imagePath.startsWith('blogs/') && !imagePath.startsWith('/')) {
-                        imagePath = 'blogs/' + imagePath;
-                    }
-                    
-                    // 处理空格字符
-                    imagePath = imagePath.replace(/\s/g, '%20');
-                    
+                    const imagePath = normalizeContentPath(src);
                     return `<img alt="${alt}" src="${imagePath}" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer;" onclick="window.open('${imagePath}', '_blank')" onerror="this.style.display='none'; console.error('图片加载失败:', this.src)" />`;
                 });
                 
                 // 处理链接（在图片之后处理，避免影响图片语法）
-                html = html.replace(/([^!])\[([^\]]+)\]\(([^)]+)\)/g, '$1<a href="$3">$2</a>');
+                html = html.replace(/([^!])\[([^\]]+)\]\(([^)]+)\)/g, function(match, prefix, text, href) {
+                    const resolvedHref = normalizeContentPath(href);
+                    return `${prefix}<a href="${resolvedHref}">${text}</a>`;
+                });
                 
                 // 处理列表
                 html = html.replace(/^\* (.+)$/gim, '<ul><li>$1</li></ul>');
@@ -502,6 +485,51 @@
         function getQueryParam(name) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(name);
+        }
+
+        function normalizeContentPath(inputPath) {
+            const rawPath = (inputPath || '').trim();
+            if (!rawPath) {
+                return rawPath;
+            }
+
+            if (/^(https?:|mailto:|tel:|#)/i.test(rawPath)) {
+                return rawPath;
+            }
+
+            let decodedPath = decodeURIComponent(rawPath);
+            const markdownPath = (currentMarkdownFile || '').replace(/\\/g, '/');
+            const markdownDir = markdownPath.includes('/')
+                ? markdownPath.substring(0, markdownPath.lastIndexOf('/') + 1)
+                : '';
+
+            if (decodedPath.startsWith('/')) {
+                decodedPath = decodedPath.replace(/^\/+/, '');
+            } else {
+                const combined = `${markdownDir}${decodedPath}`;
+                const parts = combined.split('/');
+                const normalizedParts = [];
+
+                parts.forEach((part) => {
+                    if (!part || part === '.') {
+                        return;
+                    }
+                    if (part === '..') {
+                        if (normalizedParts.length) {
+                            normalizedParts.pop();
+                        }
+                        return;
+                    }
+                    normalizedParts.push(part);
+                });
+
+                decodedPath = normalizedParts.join('/');
+            }
+
+            return decodedPath
+                .split('/')
+                .map(segment => encodeURIComponent(segment))
+                .join('/');
         }
 
         // 生成目录
@@ -581,6 +609,7 @@
         async function loadMarkdown() {
             const mdFile = getQueryParam('file');
             const contentDiv = document.getElementById('md-content');
+            currentMarkdownFile = mdFile || '';
             
             if (!mdFile) {
                 contentDiv.innerHTML = '<div class="error">未指定Markdown文件</div>';
