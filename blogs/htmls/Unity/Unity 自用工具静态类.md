@@ -3,6 +3,7 @@
 ## Tools.cs
 
 ```cs
+using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using System;
@@ -11,21 +12,76 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
-
+/// <summary>
+/// 公共工具类—橘长
+/// 
+/// --延迟类方法
+/// 用途：方便延迟调用，不用自己写协程
+///  初始化静态transform： GSF_Tools.transform = this.transform;
+///  延迟一次方法：GSF_Tools.waitToUnloadAssetWrap(()=>{ Debug.Log(""); }, 2f);
+///  循环延迟方法：GSF_Tools.waitToUnloadLoopAssetWrap(()=>{ Debug.Log(""); }, 2f);
+///  关闭协程方法：GSF_Tools.StopAllAssetWrap();
+/// 
+/// --场景加载类方法
+/// 用途：减少引用命名空间
+///  普通场景加载：GSF_Tools.LoadScene(场景名字);
+/// 
+/// --随机字符类方法
+/// 用途：加密软件
+///  生成随机字符：GSF_Tools.RandomCharacters();
+///  获取字符串的MD5：GSF_Tools.Md5String("asddsga");
+/// 
+/// --文件读写类操作
+/// 用途：.txt类文件读写
+///  写入.txt：GSF_Tools.WriteFile("路径","内容");
+///  读取.txt：GSF_Tools.ReadFile("路径");
+///  
+/// --组件类方法
+/// 用途：方便组件操作
+///  获取物体组件：GSF_Tools.FindT<Camera>("Main Camera").fieldOfView = 1;
+///  获取Btn组件：GSF_Tools.FindBtn("Button").onClick.AddListener(BtnFun);
+///  移除物体上的 T 组件：GSF_Tools.Remove<AudioListener>(主相机);
+///  
+/// --字符类操作
+/// 用途：字符串和字节类操作
+///  数组拼接字符串：GSF_Tools.ArrayToString<string>(new string[] { "a", "5", "3" })
+///  字符串转Byte：GSF_Tools.StringToByteArray("gasg214gfdsg");
+///  字节数组转字符串：GSF_Tools.ByteArrayToString(new byte[] { 32, 14, 65, 33 });
+///  对字符串插入字符：GSF_Tools.Insert("g41a5s6","a",6);
+/// 
+/// --坐标转换类方法
+/// 用途：简化坐标转换逻辑
+///  UI坐标转世界坐标：GSF_Tools.UIScreenToWorldPoint(button);
+///  
+/// --RTVoice 插件文字转语音
+/// 用途：简化语音功能
+///  播放语音：GSF_Tools.VoicePlay("这里插播一条语音提示");
+///  
+/// </summary>
 public static class GSF_Tools
 {
 
     #region 延迟方法
 
+    /// <summary>
     /// 延迟对象
+    /// </summary>
     public static Transform transform;
 
+
+
+    /// <summary>
     /// 延迟方法到指定时间执行
+    /// </summary>
+    /// <param name="action">方法</param>
+    /// <param name="delaySeconds">时间</param>
+    /// <returns></returns>
     public static void waitToUnloadAssetWrap(Action action, float delaySeconds)
     {
         MonoBehaviour owner = transform.GetComponent<MonoBehaviour>();
@@ -38,8 +94,19 @@ public static class GSF_Tools
         action();
     }
 
+    public static void waitToUnloadAssetWrap(Action action, float delaySeconds, Transform transform)
+    {
+        MonoBehaviour owner = transform.GetComponent<MonoBehaviour>();
+        owner.StartCoroutine(DelayFuc(action, delaySeconds));
+    }
 
+
+
+    /// <summary>
     /// 每多少秒循环执行一次
+    /// </summary>
+    /// <param name="action"></param>
+    /// <param name="delaySeconds"></param>
     public static void waitToUnloadLoopAssetWrap(Action action, float delaySeconds)
     {
         MonoBehaviour owner = transform.GetComponent<MonoBehaviour>();
@@ -55,7 +122,18 @@ public static class GSF_Tools
         }
     }
 
+    public static void waitToUnloadLoopAssetWrap(Action action, float delaySeconds, Transform transform)
+    {
+        MonoBehaviour owner = transform.GetComponent<MonoBehaviour>();
+        owner.StartCoroutine(DelayLoopFuc(action, delaySeconds));
+    }
+
+
+
+
+    /// <summary>
     /// 关掉所有协程
+    /// </summary>
     public static void StopAllAssetWrap()
     {
         MonoBehaviour owner = transform.GetComponent<MonoBehaviour>();
@@ -66,7 +144,10 @@ public static class GSF_Tools
 
     #region 场景加载
 
+    /// <summary>
     /// 加载场景
+    /// </summary>
+    /// <param name="sceneName"></param>
     public static void LoadScene(string sceneName)
     {
         bool flag = false;
@@ -88,7 +169,6 @@ public static class GSF_Tools
         SceneManager.LoadScene(sceneName);
     }
 
-    /// 获取所有场景名字
     private static string[] GetAllSceneName()
     {
         int count = SceneManager.sceneCountInBuildSettings;
@@ -109,7 +189,11 @@ public static class GSF_Tools
     #endregion
 
     #region 随机字符
+
+    /// <summary>
     /// 生成随机字符
+    /// </summary>
+    /// <returns></returns>
     public static string RandomCharacters()
     {
         string str = string.Empty;
@@ -134,7 +218,11 @@ public static class GSF_Tools
         return str;
     }
 
+    /// <summary>
     /// 获取字符串的MD5
+    /// </summary>
+    /// <param name="source"></param>
+    /// <returns></returns>
     public static string Md5String(string source)
     {
         MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
@@ -156,34 +244,58 @@ public static class GSF_Tools
 
     #region IO类操作
 
+    /// <summary>
     /// 写文件
-    public static void WriteFile(string pathName, string info)
+    /// </summary>
+    /// <param name="pathName"></param>
+    /// <param name="info"></param>
+
+    public static void WriteIntoTxt(StreamWriter writer,string path, string message)
     {
-        StreamWriter sw;
-        FileInfo fi = new FileInfo(pathName);
-        sw = fi.CreateText();
-        sw.WriteLine(info);
-        sw.Close();
-        sw.Dispose();
+        FileInfo file = new FileInfo(path);
+        if (!file.Exists)
+        {
+            writer = file.CreateText();
+        }
+        else
+        {
+            writer = file.AppendText();
+        }
+        writer.WriteLine(message);
+        writer.Flush();
+        writer.Dispose();
+        writer.Close();
     }
 
+    /// <summary>
     /// 读文件
-    public static string ReadFile(string pathName)
+    /// </summary>
+    /// <param name="pathName"></param>
+    /// <returns></returns>
+    public static List<string> ReadOutTxt(string path)
     {
-        StreamReader sr;
-        FileInfo fi = new FileInfo(pathName);
-        sr = fi.OpenText();
-        string info = sr.ReadToEnd();
-        sr.Close();
-        sr.Dispose();
-        return info;
+        StreamReader reader;
+        List<string> Allmytxt = new List<string>();
+        reader = new StreamReader(path, Encoding.UTF8);
+        string text;
+        while ((text = reader.ReadLine()) != null)
+        {
+            Allmytxt.Add(text);
+        }
+        reader.Dispose();
+        reader.Close();
+        return Allmytxt;
     }
 
     #endregion
 
     #region 组件方法
 
+    /// <summary>
     /// 获取物体名下的 T 组件
+    /// </summary>
+    /// <param name="namestring">物体名</param>
+    /// <returns></returns>
     public static T FindT<T>(string namestring)
     {
         if (GameObject.Find(namestring) != null)
@@ -194,7 +306,21 @@ public static class GSF_Tools
         return default;
     }
 
+    /// <summary>
+    /// 获取Button组件
+    /// </summary>
+    /// <param name="namestring"></param>
+    /// <returns></returns>
+    public static Button FindBtn(string namestring)
+    {
+        return GameObject.Find(namestring).GetComponent<Button>();
+    }
+
+    /// <summary>
     /// 移除物体上的 T 组件
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="obj"></param>
     public static void Remove<T>(GameObject obj)
     {
         if (obj.GetComponent<T>() == null)
@@ -206,7 +332,9 @@ public static class GSF_Tools
         UnityEngine.Object.Destroy(obj.GetComponent<T>() as UnityEngine.Object);
     }
 
+    /// <summary>
     /// 获取数组自身的 Object
+    /// </summary>
     public static GameObject GetArrayThisObj(this GameObject[] obj)
     {
         if (obj.Length >= 1)
@@ -241,7 +369,11 @@ public static class GSF_Tools
 
     #region 子物体获取
 
+    /// <summary>
     /// 获取父物体下面的所有子对象 返回类型为List
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static List<GameObject> GetChildToList(this Transform obj)
     {
         List<GameObject> tempArrayobj = new List<GameObject>();
@@ -253,7 +385,11 @@ public static class GSF_Tools
         return tempArrayobj;
     }
 
+    /// <summary>
     /// 获取父物体下面的所有子对象 返回类型为List
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static List<GameObject> GetChildToList(this GameObject obj)
     {
         List<GameObject> tempArrayobj = new List<GameObject>();
@@ -265,7 +401,11 @@ public static class GSF_Tools
         return tempArrayobj;
     }
 
+    /// <summary>
     /// 获取父物体下面的所有子对象 返回类型为数组
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static GameObject[] GetChildToArray(this GameObject obj)
     {
         List<GameObject> tempArrayobj = new List<GameObject>();
@@ -278,7 +418,11 @@ public static class GSF_Tools
         return tempArraobj2;
     }
 
+    /// <summary>
     /// 获取父物体下面的所有子对象 返回类型为数组
+    /// </summary>
+    /// <param name="obj"></param>
+    /// <returns></returns>
     public static GameObject[] GetChildToArray(this Transform obj)
     {
         List<GameObject> tempArrayobj = new List<GameObject>();
@@ -291,7 +435,12 @@ public static class GSF_Tools
         return tempArraobj2;
     }
 
+    /// <summary>
     /// 在当前物体下多级查找子物体
+    /// </summary>
+    /// <param name="goParent">父物体</param>
+    /// <param name="childName">子物体名</param>
+    /// <returns></returns>
     public static Transform FindTheChild(GameObject goParent, string childName)
     {
         var searchTrans = goParent.transform.Find(childName);
@@ -309,12 +458,40 @@ public static class GSF_Tools
 
         return searchTrans;
     }
+    /// <summary>
+    /// 在当前物体下多级查找子物体
+    /// </summary>
+    /// <param name="goParent">父物体</param>
+    /// <param name="childName">子物体名</param>
+    /// <returns></returns>
+    public static Button FindTheChildBtn(GameObject goParent, string childName)
+    {
+        var searchTrans = goParent.transform.Find(childName);
+        if (searchTrans == null)
+        {
+            foreach (Transform trans in goParent.transform)
+            {
+                searchTrans = FindTheChild(trans.gameObject, childName);
+                if (searchTrans != null)
+                {
+                    return searchTrans.GetComponent<Button>();
+                }
+            }
+        }
 
+        return searchTrans.GetComponent<Button>();
+    }
     #endregion
 
     #region 字符操作
 
+    /// <summary>
     /// 将一个数组转换为字符串并拼接
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="tarray"></param>
+    /// <param name="splitestr"></param>
+    /// <returns></returns>
     public static string ArrayToString<T>(T[] tarray, string splitestr = "")
     {
         string arrayString = "";
@@ -326,19 +503,33 @@ public static class GSF_Tools
         return arrayString;
     }
 
+    /// <summary>
     /// 将一个字符串转换为一个字节数组
+    /// </summary>
+    /// <param name="msg"></param>
+    /// <returns></returns>
     public static byte[] StringToByteArray(string msg)
     {
         return System.Text.Encoding.UTF8.GetBytes(msg);
     }
 
+    /// <summary>
     /// 字节数组转换为字符串
+    /// </summary>
+    /// <param name="byteArray"></param>
+    /// <returns></returns>
     public static string ByteArrayToString(byte[] byteArray)
     {
         return System.Text.Encoding.UTF8.GetString(byteArray);
     }
 
+    /// <summary>
     /// 在字符串的指定位置插入一个字符
+    /// </summary>
+    /// <param name="strString">原字符串</param>
+    /// <param name="inStr">插入的字符</param>
+    /// <param name="inIndex">插入的位置</param>
+    /// <returns></returns>
     public static string Insert(string strString, string inStr, int inIndex)
     {
         if (inIndex > strString.Length)
@@ -355,7 +546,11 @@ public static class GSF_Tools
 
     #region 坐标转换
 
+    /// <summary>
     /// 对指定2DUI的坐标系转为世界坐标
+    /// </summary>
+    /// <param name="uiPostion">需要获取世界坐标的UI物体</param>
+    /// <returns></returns>
     public static Vector3 UIScreenToWorldPoint(Vector3 uiPostion)
     {
         uiPostion = Camera.main.WorldToScreenPoint(uiPostion);
@@ -367,19 +562,40 @@ public static class GSF_Tools
 
     #region 资源加载方法
 
-    /// 加载Resource资源
-    public static GameObject LoadResourcePrefab(string prefabName, string path = "")
+    /// <summary>
+    /// 加载UI资源
+    /// </summary>
+    /// <param name="prefabName">资源名称</param>
+    /// <returns></returns>
+    public static GameObject LoadUIPrefab(string prefabName)
     {
-        return (GameObject)Resources.Load(path + prefabName);
+        return (GameObject)Resources.Load("ModulePrefabs/UIPrefab/" + prefabName);
+    }
+
+    /// <summary>
+    /// 加载模型资源
+    /// </summary>
+    /// <param name="prefabName">资源名称</param>
+    /// <returns></returns>
+    public static GameObject LoadModelPrefab(string prefabName)
+    {
+        return (GameObject)Resources.Load("ModulePrefabs/ModelPrefab/" + prefabName);
     }
 
     #endregion
 
 
+
+    public static bool IsKH = false;
+    public static bool IsMute = false;
+    public static bool IsLogin = false;
+
 }
 
+/// <summary>
 /// 原始类扩展
 /// 例：gameObject.SetActive(bool); —> transform.SetActive(bool);
+/// </summary>
 public static class GsfExtensions
 {
     public static void SetPositionX(this Transform t, float newX)
@@ -597,12 +813,39 @@ public static class GsfExtensions
         t.transform.DOScale(scale, time);
     }
 
+    public static Color DQLToolsBGStrColor(this Color c)
+    {
+        c = new Color(1, 1, 1, 0.2f);
+        return c;
+    }
+
+    public static Color DQLToolsBGHighColor(this Color c)
+    {
+        c = new Color(0, 1, 1, 0.5f);
+        return c;
+    }
     public static void SetDoPos_Ros(this Transform _tran, Transform _Pos, float speed = 0.5f)
     {
         _tran.DOMove(_Pos.position, speed).SetEase(Ease.Linear);
         _tran.DORotateQuaternion(_Pos.rotation, speed).SetEase(Ease.Linear);
     }
 
+    public static Tweener DoScrollberValue(this Scrollbar target, float endValue, float duration)
+    {
+        if (endValue > 1f)
+        {
+            endValue = 1f;
+        }
+        else if (endValue < 0f)
+        {
+            endValue = 0f;
+        }
+
+        return DOTween.To(() => target.value, delegate (float x)
+        {
+            target.value = x;
+        }, endValue, duration).SetTarget(target);
+    }
 }
 ```
 
@@ -619,3 +862,4 @@ public class Test : MonoBehaviour
         }, 2f);
     }
 }
+```

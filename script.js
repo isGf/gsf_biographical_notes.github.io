@@ -2,29 +2,41 @@ document.addEventListener('DOMContentLoaded', () => {
     // 确保页面加载时滚动到顶部
     window.scrollTo(0, 0);
 
+    const bindClick = (elementId, handler) => {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.addEventListener('click', handler);
+        }
+    };
+
     // 主题切换功能
     const themeToggle = document.querySelector('.theme-toggle');
-    const themeIcon = themeToggle.querySelector('.theme-icon');
-    const themeText = themeToggle.querySelector('.theme-text');
     const root = document.documentElement;
-    
-    // 检查本地存储中的主题设置，默认为浅色
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    root.setAttribute('data-theme', savedTheme);
-    updateThemeButton(savedTheme);
+    const themeIcon = themeToggle?.querySelector('.theme-icon');
+    const themeText = themeToggle?.querySelector('.theme-text');
 
-    themeToggle.addEventListener('click', () => {
-        const currentTheme = root.getAttribute('data-theme');
-        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-        
-        root.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        updateThemeButton(newTheme);
-    });
+    if (themeToggle && themeIcon && themeText) {
+        // 检查本地存储中的主题设置，默认为浅色
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        root.setAttribute('data-theme', savedTheme);
+        updateThemeButton(savedTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = root.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+            root.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeButton(newTheme);
+        });
+    }
 
     function updateThemeButton(theme) {
+        if (!themeIcon || !themeText) {
+            return;
+        }
         themeIcon.textContent = theme === 'dark' ? '🌙' : '☀️';
-        themeText.textContent = theme === 'dark' ? '浅色' : '深色';
+        themeText.textContent = theme === 'dark' ? '切换浅色' : '切换深色';
     }
 
     // 滚动动画
@@ -38,6 +50,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.1 });
 
     cards.forEach(card => observer.observe(card));
+
+    document.querySelectorAll('img[data-placeholder]').forEach((image) => {
+        image.addEventListener('error', () => {
+            const placeholderText = image.dataset.placeholder || '内容更新中';
+            const svg = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+                    <rect width="100%" height="100%" rx="24" fill="#e2e8f0"/>
+                    <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
+                        fill="#64748b" font-family="Segoe UI, Arial, sans-serif" font-size="28" font-weight="600">
+                        ${placeholderText}
+                    </text>
+                </svg>
+            `;
+            image.src = `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
+            image.classList.add('image-placeholder');
+            image.alt = placeholderText;
+        }, { once: true });
+    });
 
     // 按钮点击效果
     const buttons = document.querySelectorAll('button');
@@ -88,44 +118,37 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    const personQueryButton = document.getElementById('person-query-start');
-    personQueryButton.addEventListener('click', () => {
+    bindClick('person-query-start', () => {
         window.open('http://192.168.0.75:3000/chat/share?shareId=ox8wvb9t8f1q4d65gnta77cd&showHistory=0', '_blank');
     });
 
     // 添加资质查询按钮的事件
-    const qualificationQueryButton = document.getElementById('qualification-query-start');
-    qualificationQueryButton.addEventListener('click', () => {
+    bindClick('qualification-query-start', () => {
         window.open('http://192.168.0.75:3000/chat/share?shareId=cxzqbsrg4t2dqnozj93lq91j&showHistory=0', '_blank');
     });
 
     // 添加随便聊聊按钮的事件
-    const chatButton = document.getElementById('chat-button');
-    chatButton.addEventListener('click', () => {
+    bindClick('chat-button', () => {
         window.open('http://192.168.0.75:3000/chat/share?shareId=jcx7em061jhl7rgvwk0ywzq1&showHistory=0', '_blank');
     });
 
     // 添加文件问答按钮的事件
-    const documentParseButton = document.getElementById('document-parse-start');
-    documentParseButton.addEventListener('click', () => {
+    bindClick('document-parse-start', () => {
         window.open('http://192.168.0.75/chat/Kbdq2SJCM4EeF69o', '_blank');
     });
 
     // 添加资料获取按钮的事件
-    const getFilesButton = document.getElementById('file-get-start');
-    getFilesButton.addEventListener('click', () => {
+    bindClick('file-get-start', () => {
         window.open('http://192.168.0.75:3000/chat/share?shareId=imbxmginkrawoc5zs887xopt&showHistory=0', '_blank');
     });
 
     // 添加图表生成按钮的事件
-    const chartmakeButton = document.getElementById('chart-make-start');
-    chartmakeButton.addEventListener('click', () => {
+    bindClick('chart-make-start', () => {
         window.open('http://192.168.0.75/chat/dO0LrQe9IGOvmeWy', '_blank');
     });
 
     // 添加卜卦按钮的事件
-    const divinationButton = document.getElementById('divination-start');
-    divinationButton.addEventListener('click', () => {
+    bindClick('divination-start', () => {
         window.open('http://192.168.0.75/chat/qu7qAbJZDNeyI7VE', '_blank');
     });
     

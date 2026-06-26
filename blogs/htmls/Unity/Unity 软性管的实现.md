@@ -1,60 +1,24 @@
 # Unity 软性管的实现
 
-## 目录
-- [实现原理](#实现原理)
-- [LineRenderer方案](#linerenderer方案)
-- [Shader方案](#shader方案)
-- [物理模拟](#物理模拟)
-- [性能优化](#性能优化)
+## 资源下载
 
-## 实现原理
+这个页面当前以资源下载为主，方便直接获取工程资源并导入使用。
 
-软性管（软管）在游戏中常用于模拟水管、电线、绳索等柔性物体。主要有以下几种实现方式：
+[下载 UnityPackage](../../../blogs/downloads/Unity/软体管.unitypackage)
 
-## LineRenderer方案
+## 资源说明
 
-### 基础实现
-```csharp
-public class FlexibleTube : MonoBehaviour
-{
-    public LineRenderer lineRenderer;
-    public int segmentCount = 20;
-    public float tubeLength = 5f;
-    
-    void Start()
-    {
-        lineRenderer.positionCount = segmentCount;
-        GenerateTube();
-    }
-    
-    void GenerateTube()
-    {
-        Vector3[] positions = new Vector3[segmentCount];
-        for (int i = 0; i < segmentCount; i++)
-        {
-            float t = (float)i / (segmentCount - 1);
-            positions[i] = new Vector3(0, t * tubeLength, 0);
-        }
-        lineRenderer.SetPositions(positions);
-    }
-}
-```
+- 文件类型：`.unitypackage`
+- 适用场景：软体管、软管、水管、线缆等柔性效果演示
+- 使用方式：导入后可直接查看和调整
 
-## Shader方案
+## 导入方式
 
-（内容待补充）
+1. 点击上方下载链接获取资源包
+2. 打开 Unity，选择 `Assets > Import Package > Custom Package...`
+3. 选择下载好的 `.unitypackage` 文件并导入
+4. 导入完成后，打开对应场景或预制体查看效果
 
-## 物理模拟
+## 效果预览
 
-（内容待补充）
-
-## 性能优化
-
-（内容待补充）
-
----
-
-> 💡 **提示**
-> 对于复杂的软管效果，建议使用物理模拟结合LineRenderer实现。
-
-> 如果这篇文章对你有帮助，请点个赞支持一下！ ❤️
+![Unity 软体管效果预览](../../../blogs/imgs/Unity/软体管-动图.gif)
